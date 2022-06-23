@@ -3,6 +3,8 @@
 class Rtl
 
   attr_reader :user
+  ,
+  ,
 
   def initialize(user)
     @user = user
