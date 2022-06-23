@@ -1,7 +1,7 @@
 import ComboBoxSelectBoxHeaderComponent from "select-kit/components/combo-box/combo-box-header";
 import discourseComputed from "discourse-common/utils/decorators";
 import layout from "select-kit/templates/components/category-drop/category-drop-header";
-import { readOnly } from "@ember/object/computed";
+import { bool, readOnly } from "@ember/object/computed";
 import { schedule } from "@ember/runloop";
 import { htmlSafe } from "@ember/template";
 
@@ -10,6 +10,7 @@ export default ComboBoxSelectBoxHeaderComponent.extend({
   classNames: ["category-drop-header"],
   classNameBindings: ["categoryStyleClass"],
   categoryStyleClass: readOnly("site.category_style"),
+  shouldDisplayClearableButton: bool("value"),
 
   @discourseComputed("selectedContent.color")
   categoryBackgroundColor(categoryColor) {
