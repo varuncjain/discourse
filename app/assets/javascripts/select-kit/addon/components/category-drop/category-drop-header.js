@@ -58,7 +58,7 @@ export default ComboBoxSelectBoxHeaderComponent.extend({
         this.element.setAttribute("style", this.categoryStyle);
         this.element
           .querySelector(".caret-icon")
-          .setAttribute("style", this.categoryStyle);
+          ?.setAttribute("style", this.categoryStyle);
       }
     });
   },
