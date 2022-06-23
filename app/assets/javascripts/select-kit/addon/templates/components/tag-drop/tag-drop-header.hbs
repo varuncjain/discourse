@@ -6,5 +6,7 @@
     shouldDisplayClearableButton=shouldDisplayClearableButton
   }}
 
-  {{d-icon caretIcon class="caret-icon"}}
+  {{#unless shouldDisplayClearableButton}}
+    {{d-icon caretIcon class="caret-icon"}}
+  {{/unless}}
 </div>
