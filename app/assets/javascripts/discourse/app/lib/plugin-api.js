@@ -4,11 +4,6 @@ import ComposerEditor, {
   addComposerUploadPreProcessor,
 } from "discourse/components/composer-editor";
 import {
-  addButton,
-  apiExtraButtons,
-  removeButton,
-} from "discourse/widgets/post-menu";
-import {
   addExtraIconRenderer,
   replaceCategoryLinkRenderer,
 } from "discourse/helpers/category-link";
@@ -537,8 +532,8 @@ class PluginApi {
    * ```
    **/
   addPostMenuButton(name, callback) {
-    apiExtraButtons[name] = callback;
-    addButton(name, callback);
+    const extraButtons = this.container.lookup("post-menu:extra-buttons");
+    extraButtons[name] = callback;
   }
 
   /**
@@ -558,8 +553,9 @@ class PluginApi {
    * });
    * ```
    **/
-  removePostMenuButton(name, callback) {
-    removeButton(name, callback);
+  removePostMenuButton(name, callback = () => true) {
+    const removeButtons = this.container.lookup("post-menu:remove-buttons");
+    removeButtons[name] = callback;
   }
 
   /**

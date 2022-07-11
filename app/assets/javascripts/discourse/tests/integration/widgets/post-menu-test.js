@@ -7,16 +7,11 @@ import {
   exists,
 } from "discourse/tests/helpers/qunit-helpers";
 import hbs from "htmlbars-inline-precompile";
-import { resetPostMenuExtraButtons } from "discourse/widgets/post-menu";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
 discourseModule(
   "Integration | Component | Widget | post-menu",
   function (hooks) {
-    hooks.afterEach(() => {
-      resetPostMenuExtraButtons();
-    });
-
     setupRenderingTest(hooks);
 
     componentTest("add extra button", {
@@ -63,7 +58,7 @@ discourseModule(
       },
     });
 
-    componentTest("does not remove butto", {
+    componentTest("does not remove button", {
       template: hbs`{{mount-widget widget="post-menu" args=args}}`,
 
       beforeEach() {

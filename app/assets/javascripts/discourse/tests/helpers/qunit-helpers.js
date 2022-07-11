@@ -24,7 +24,6 @@ import deprecated from "discourse-common/lib/deprecated";
 import { restoreBaseUri } from "discourse-common/lib/get-url";
 import { flushMap } from "discourse/services/store";
 import { initSearchData } from "discourse/widgets/search-menu";
-import { resetPostMenuExtraButtons } from "discourse/widgets/post-menu";
 import { isEmpty } from "@ember/utils";
 import { resetCustomPostMessageCallbacks } from "discourse/controllers/topic";
 import { resetDecorators } from "discourse/widgets/widget";
@@ -172,7 +171,6 @@ function testCleanup(container, app) {
   resetCardClickListenerSelector();
   resetComposerCustomizations();
   resetQuickSearchRandomTips();
-  resetPostMenuExtraButtons();
   clearExtraKeyboardShortcutHelp();
   clearNavItems();
   setTopicList(null);
