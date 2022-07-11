@@ -22,9 +22,9 @@ function registerButton(name, builder) {
 }
 
 export function buildButton(name, widget) {
-  let { attrs, state, siteSettings, settings, currentUser, container } = widget;
+  let { attrs, state, siteSettings, settings, currentUser, register } = widget;
   let shouldAddButton = true;
-  const removeButtons = container.lookup("post-menu:remove-buttons");
+  const removeButtons = register.lookup("post-menu:remove-buttons");
 
   if (removeButtons[name]) {
     shouldAddButton = !removeButtons[name](
@@ -513,10 +513,10 @@ export default createWidget("post-menu", {
       visibleButtons.splice(visibleButtons.length - 1, 0, showMore);
     }
 
-    const extraButtons = this.container.lookup("post-menu:extra-buttons");
+    const extraButtons = this.register.lookup("post-menu:extra-buttons");
     Object.values(extraButtons).forEach((builder) => {
       let shouldAddButton = true;
-      const removeButtons = this.container.lookup("post-menu:remove-buttons");
+      const removeButtons = this.register.lookup("post-menu:remove-buttons");
 
       if (removeButtons[name]) {
         shouldAddButton = !removeButtons[name](
