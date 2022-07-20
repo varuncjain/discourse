@@ -7,16 +7,32 @@ import {
 } from "discourse/tests/helpers/qunit-helpers";
 import I18n from "I18n";
 import { test } from "qunit";
-import pretender from "../helpers/create-pretender";
+import NotificationFixtures from "discourse/tests/fixtures/notification-fixtures";
+import { cloneJSON } from "discourse-common/lib/object";
 
 acceptance("Dismiss notification confirmation", function (needs) {
   needs.user();
+  let markRead = false;
+  needs.hooks.afterEach(() => {
+    markRead = false;
+  });
+  needs.pretender((server, helper) => {
+    server.put("/notifications/mark-read", () => {
+      markRead = true;
+      return helper.response({ success: true });
+    });
+    server.get("/notifications", () => {
+      const data = cloneJSON(NotificationFixtures["/notifications"]);
+      if (markRead) {
+        data.notifications.forEach((notification) => {
+          notification.read = true;
+        });
+      }
+      return helper.response(data);
+    });
+  });
 
   test("does not show modal when no high priority notifications", async function (assert) {
-    pretender.put("/notifications/mark-read", () => {
-      return [200, { "Content-Type": "application/json" }, { success: true }];
-    });
-
     await visit("/");
     await click(".current-user");
     await click(".notifications-dismiss");
@@ -50,9 +66,6 @@ acceptance("Dismiss notification confirmation", function (needs) {
       query(".dismiss-notification-confirmation-modal .btn-primary").innerText,
       I18n.t("notifications.dismiss_confirmation.dismiss")
     );
-    pretender.put("/notifications/mark-read", () => {
-      return [200, { "Content-Type": "application/json" }, { success: true }];
-    });
 
     await click(".dismiss-notification-confirmation-modal .btn-primary");
 
@@ -75,5 +88,14 @@ acceptance("Dismiss notification confirmation", function (needs) {
     await click(".dismiss-notification-confirmation-modal .btn-default");
 
     assert.notOk(exists(".dismiss-notification-confirmation"));
+  });
+
+  test("all unread notifications lose their highlight after dismissing", async function (assert) {
+    await visit("/");
+    await click(".current-user");
+    assert.ok(exists("#quick-access-notifications li:not(.read)"));
+    await click(".notifications-dismiss");
+    assert.ok(!exists("#quick-access-notifications li:not(.read)"));
+    assert.ok(exists("#quick-access-notifications li.read"));
   });
 });

@@ -124,31 +124,32 @@ export default Service.extend({
 
       if (adapter.cache) {
         const stale = adapter.findStale(this, type, findArgs, opts);
-        hydrated = this._updateStale(stale, hydrated, adapter.primaryKey);
-        adapter.cacheFind(this, type, findArgs, opts, hydrated);
+        const typeName = underscore(this.pluralize(adapter.apiNameFor(type)));
+
+        if (result[typeName]) {
+          this._updateStale(stale, adapter.primaryKey, result[typeName]);
+          adapter.cacheFind(this, type, findArgs, opts, hydrated);
+        } else {
+          // eslint-disable-next-line no-console
+          console.error(
+            `failed to update cached data because JSON response is missing \`${typeName}\` key`,
+            result
+          );
+        }
       }
       return hydrated;
     });
   },
 
-  _updateStale(stale, hydrated, primaryKey) {
+  _updateStale(stale, primaryKey, freshRecords) {
     if (!stale) {
-      return hydrated;
+      return;
     }
 
-    hydrated.set(
-      "content",
-      hydrated.get("content").map((item) => {
-        let staleItem = stale.content.findBy(primaryKey, item.get(primaryKey));
-        if (staleItem) {
-          staleItem.setProperties(item);
-        } else {
-          staleItem = item;
-        }
-        return staleItem;
-      })
-    );
-    return hydrated;
+    freshRecords.forEach((item) => {
+      const staleItem = stale.content.findBy(primaryKey, item[primaryKey]);
+      staleItem?.setProperties(item);
+    });
   },
 
   refreshResults(resultSet, type, url) {
