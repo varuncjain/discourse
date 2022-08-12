@@ -29,6 +29,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  before_action :set_thread_variable
   before_action :rate_limit_crawlers
   before_action :check_readonly_mode
   before_action :handle_theme
@@ -55,6 +56,10 @@ class ApplicationController < ActionController::Base
   CHALLENGE_KEY ||= 'CHALLENGE_KEY'
 
   layout :set_layout
+
+  def set_thread_variable
+    Thread.current["_in_request"] = true
+  end
 
   def has_escaped_fragment?
     SiteSetting.enable_escaped_fragments? && params.key?("_escaped_fragment_")

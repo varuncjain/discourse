@@ -48,6 +48,7 @@ class DistributedMutex
 
   # NOTE wrapped in mutex to maintain its semantics
   def synchronize
+    Rails.logger.warn("DistributedMutex.synchronize called inside a request lifecycle") if Thread.current["_in_request"]
     result = nil
 
     @mutex.synchronize do
