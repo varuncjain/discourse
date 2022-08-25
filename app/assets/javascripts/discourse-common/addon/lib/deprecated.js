@@ -1,4 +1,10 @@
+let silenced = false;
+
 export default function deprecated(msg, opts = {}) {
+  if (silenced) {
+    return;
+  }
+
   msg = ["Deprecation notice:", msg];
   if (opts.since) {
     msg.push(`(deprecated since Discourse ${opts.since})`);
@@ -20,4 +26,16 @@ export default function deprecated(msg, opts = {}) {
   }
 
   console.warn(consolePrefix, msg); //eslint-disable-line no-console
+}
+
+export async function withSilencedDeprecations(callback) {
+  if (!require("discourse-common/config/environment").isTesting()) {
+    throw "Deprecations cannot be silenced outside tests";
+  }
+  try {
+    silenced = true;
+    return await callback();
+  } finally {
+    silenced = false;
+  }
 }
