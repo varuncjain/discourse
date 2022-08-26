@@ -14,9 +14,6 @@
   $hover-icon-color: var(--primary-low)
 ) {
   @include form-item-sizing;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   margin: 0;
   font-weight: normal;
   color: $text-color;
@@ -53,6 +50,9 @@
     }
   }
   &[href] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     color: $text-color;
   }
   &:active,

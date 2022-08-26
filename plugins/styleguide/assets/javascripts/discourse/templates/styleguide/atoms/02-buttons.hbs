@@ -81,3 +81,12 @@
     <DButton @class={{concat "btn-flat " bs.class}} @disabled={{bs.disabled}} @translatedLabel={{bs.text}} />
   {{/each}}
 </StyleguideExample>
+
+<StyleguideExample @title="dbuttons with block elements">
+  <DButton @class="btn-default">
+    Some <strong>bold</strong> and some <i>italic</i>
+  </DButton>
+  <DButton @class="btn-default">
+    {{d-icon "cog"}} Icons  <i>and</i> HTML {{d-icon "plus"}}
+  </DButton>
+</StyleguideExample>
