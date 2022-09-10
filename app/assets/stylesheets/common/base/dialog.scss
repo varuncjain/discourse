@@ -62,6 +62,7 @@
   .dialog-close {
     margin-left: auto;
     padding-left: 15px;
+    flex-basis: content;
     .d-icon {
       color: var(--primary-high);
     }
