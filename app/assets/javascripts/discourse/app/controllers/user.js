@@ -222,10 +222,10 @@ export default Controller.extend(CanCheckEmails, {
             if (data.deleted) {
               document.location = getURL("/admin/users/list/active");
             } else {
-              bootbox.alert(I18n.t("admin.user.delete_failed"));
+              this.dialog.alert(I18n.t("admin.user.delete_failed"));
             }
           })
-          .catch(() => bootbox.alert(I18n.t("admin.user.delete_failed")));
+          .catch(() => this.dialog.alert(I18n.t("admin.user.delete_failed")));
       };
 
       const buttons = [
