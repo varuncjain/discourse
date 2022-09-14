@@ -1,5 +1,7 @@
+import { decode } from "blurhash";
+
 // Min size in pixels for consideration for lazy loading
-const MINIMUM_SIZE = 150;
+const MINIMUM_SIZE = 0;
 
 function forEachImage(post, callback) {
   post.querySelectorAll("img").forEach((img) => {
@@ -30,7 +32,23 @@ export function nativeLazyLoading(api) {
           return;
         }
 
-        if (img.dataset.smallUpload) {
+        let smallUpload;
+
+        if (img.dataset.blurhash) {
+          const pixels = decode(img.dataset.blurhash, 50, 50);
+          const canvas = document.createElement("canvas");
+          canvas.width = 50;
+          canvas.height = 50;
+          const ctx = canvas.getContext("2d");
+          const imageData = ctx.createImageData(50, 50);
+          imageData.data.set(pixels);
+          ctx.putImageData(imageData, 0, 0);
+          smallUpload = canvas.toDataURL();
+        } else {
+          smallUpload = img.dataset.smallUpload;
+        }
+
+        if (smallUpload) {
           if (!isLoaded(img)) {
             if (!img.onload) {
               img.onload = () => {
@@ -39,10 +57,7 @@ export function nativeLazyLoading(api) {
               };
             }
 
-            img.style.setProperty(
-              "background-image",
-              `url(${img.dataset.smallUpload})`
-            );
+            img.style.setProperty("background-image", `url(${smallUpload})`);
             img.style.setProperty("background-size", "cover");
           }
         }

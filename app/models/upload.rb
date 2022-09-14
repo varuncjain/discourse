@@ -10,6 +10,7 @@ class Upload < ActiveRecord::Base
   SEEDED_ID_THRESHOLD = 0
   URL_REGEX ||= /(\/original\/\dX[\/\.\w]*\/(\h+)[\.\w]*)/
   MAX_IDENTIFY_SECONDS = 5
+  MAX_BLURHASH_SECONDS = 5
 
   belongs_to :user
   belongs_to :access_control_post, class_name: 'Post'
@@ -314,6 +315,29 @@ class Upload < ActiveRecord::Base
 
   def thumbnail_height
     get_dimension(:thumbnail_height)
+  end
+
+  def blurhash
+    # TODO cache this value in a column
+
+    return if !FileHelper.is_supported_image?("image.#{extension}")
+    return if extension == "svg"
+
+    local_path =
+      if local?
+        Discourse.store.path_for(self)
+      else
+        Discourse.store.download(self).path
+      end
+
+    # TODO error handling
+    # TODO loading the full-size image into memory in the main app process
+    # seems like a bad idea. We should use a resized version, or call out to
+    # a separate process
+    image = Magick::ImageList.new(local_path)
+    Blurhash.encode(image.columns, image.rows, image.export_pixels)
+
+    # data.strip
   end
 
   def target_image_quality(local_path, test_quality)

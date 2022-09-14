@@ -248,8 +248,8 @@ class CookedPostProcessor
       img["src"] = upload.url
     end
 
-    if small_upload = loading_image(upload)
-      img["data-small-upload"] = small_upload.url
+    if blurhash = upload.blurhash
+      img["data-blurhash"] = blurhash
     end
   end
 
