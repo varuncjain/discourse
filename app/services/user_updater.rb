@@ -17,6 +17,11 @@ class UserUpdater
     muted_tags: :muted
   }
 
+  TUTORIAL_OPTION_ATTR = [
+    :skip_first_notification,
+    :skip_topic_timeline,
+  ]
+
   OPTION_ATTR = [
     :mailing_list_mode,
     :mailing_list_mode_frequency,
@@ -48,7 +53,7 @@ class UserUpdater
     :timezone,
     :skip_new_user_tips,
     :default_calendar
-  ]
+  ] + TUTORIAL_OPTION_ATTR
 
   NOTIFICATION_SCHEDULE_ATTRS = -> {
     attrs = [:enabled]
@@ -175,6 +180,12 @@ class UserUpdater
         else
           user.user_option.public_send("#{attribute}=", attributes[attribute])
         end
+      end
+    end
+
+    if attributes.key?(:skip_new_user_tips)
+      TUTORIAL_OPTION_ATTR.each do |attribute|
+        user.user_option.public_send("#{attribute}=", user.user_option.skip_new_user_tips)
       end
     end
 

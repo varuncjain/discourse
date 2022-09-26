@@ -9,6 +9,8 @@ import discourseLater from "discourse-common/lib/later";
 import { relativeAge } from "discourse/lib/formatter";
 import renderTags from "discourse/lib/render-tags";
 import renderTopicFeaturedLink from "discourse/lib/render-topic-featured-link";
+import getURL from "discourse-common/lib/get-url";
+import { hideTutorial, showTutorial } from "discourse/lib/tutorial";
 
 const SCROLLER_HEIGHT = 50;
 const LAST_READ_HEIGHT = 20;
@@ -597,5 +599,34 @@ export default createWidget("topic-timeline", {
     }
 
     return result;
+  },
+
+  didRenderWidget() {
+    const reference = document.querySelector("div.timeline-scrollarea-wrapper");
+    if (!reference) {
+      return;
+    }
+
+    this._tippy = showTutorial(this._tippy, {
+      currentUser: this.currentUser,
+      tutorial: "topic-timeline",
+
+      educationTitle: I18n.t("tutorial.topic_timeline.education_title"),
+      educationContent: I18n.t("tutorial.topic_timeline.education_content"),
+      educationPrimary: I18n.t("tutorial.topic_timeline.education_primary"),
+      educationImage: getURL("/images/education/topic-timeline.png"),
+
+      reference,
+
+      placement: "left",
+    });
+  },
+
+  destroy() {
+    this._tippy = hideTutorial(this._tippy);
+  },
+
+  willRerenderWidget() {
+    this._tippy = hideTutorial(this._tippy);
   },
 });

@@ -1,7 +1,6 @@
-import DiscourseURL, { userPath } from "discourse/lib/url";
+import DiscourseURL from "discourse/lib/url";
 import I18n from "I18n";
 import { addExtraUserClasses } from "discourse/helpers/user-avatar";
-import { ajax } from "discourse/lib/ajax";
 import { avatarImg } from "discourse/widgets/post";
 import { createWidget } from "discourse/widgets/widget";
 import getURL from "discourse-common/lib/get-url";
@@ -13,6 +12,7 @@ import { wantsNewWindow } from "discourse/lib/intercept-click";
 import { logSearchLinkClick } from "discourse/lib/search";
 import RenderGlimmer from "discourse/widgets/render-glimmer";
 import { hbs } from "ember-cli-htmlbars";
+import { hideTutorial, showTutorial } from "discourse/lib/tutorial";
 
 let _extraHeaderIcons = [];
 
@@ -87,8 +87,9 @@ createWidget("header-notifications", {
         const count = unread + reviewables;
         if (count > 0) {
           if (this._shouldHighlightAvatar()) {
-            this._addAvatarHighlight(contents);
+            contents.push(h("span.ring"));
           }
+
           contents.push(
             this.attach("link", {
               action: attrs.action,
@@ -118,7 +119,7 @@ createWidget("header-notifications", {
         const unreadHighPriority = user.unread_high_priority_notifications;
         if (!!unreadHighPriority) {
           if (this._shouldHighlightAvatar()) {
-            this._addAvatarHighlight(contents);
+            contents.push(h("span.ring"));
           }
 
           // add the counter for the unread high priority
@@ -150,39 +151,36 @@ createWidget("header-notifications", {
     );
   },
 
-  _addAvatarHighlight(contents) {
-    contents.push(h("span.ring"));
-    contents.push(h("span.ring-backdrop-spotlight"));
-    contents.push(
-      h(
-        "span.ring-backdrop",
-        {},
-        h("h1.ring-first-notification", {}, [
-          h(
-            "span",
-            { className: "first-notification" },
-            I18n.t("user.first_notification")
-          ),
-          h("span", { className: "read-later" }, [
-            this.attach("link", {
-              action: "readLater",
-              className: "read-later-link",
-              label: "user.skip_new_user_tips.read_later",
-            }),
-          ]),
-          h("span", {}, [
-            I18n.t("user.skip_new_user_tips.not_first_time"),
-            " ",
-            this.attach("link", {
-              action: "skipNewUserTips",
-              className: "skip-new-user-tips",
-              label: "user.skip_new_user_tips.skip_link",
-              title: "user.skip_new_user_tips.description",
-            }),
-          ]),
-        ])
-      )
-    );
+  didRenderWidget() {
+    if (
+      !this._shouldHighlightAvatar() ||
+      !document.querySelector(".badge-notification")
+    ) {
+      return;
+    }
+
+    this._tippy = showTutorial(this._tippy, {
+      currentUser: this.currentUser,
+      tutorial: "first-notification",
+
+      educationTitle: I18n.t("tutorial.first_notification.education_title"),
+      educationContent: I18n.t("tutorial.first_notification.education_content"),
+      educationPrimary: I18n.t("tutorial.first_notification.education_primary"),
+
+      reference: document
+        .querySelector(".badge-notification")
+        .parentElement.querySelector(".avatar"),
+
+      placement: "bottom-end",
+    });
+  },
+
+  destroy() {
+    this._tippy = hideTutorial(this._tippy);
+  },
+
+  willRerenderWidget() {
+    this._tippy = hideTutorial(this._tippy);
   },
 });
 
@@ -687,43 +685,6 @@ export default createWidget("header", {
     if (state.searchVisible || state.hamburgerVisible || state.userVisible) {
       this.closeAll();
     }
-  },
-
-  headerDismissFirstNotificationMask() {
-    // Dismiss notifications
-    if (document.body.classList.contains("unread-first-notification")) {
-      document.body.classList.remove("unread-first-notification");
-    }
-    this.store
-      .findStale(
-        "notification",
-        {
-          recent: true,
-          silent: this.get("currentUser.enforcedSecondFactor"),
-          limit: 5,
-        },
-        { cacheKey: "recent-notifications" }
-      )
-      .refresh();
-    // Update UI
-    this.state.ringBackdrop = false;
-    this.scheduleRerender();
-  },
-
-  readLater() {
-    this.headerDismissFirstNotificationMask();
-  },
-
-  skipNewUserTips() {
-    this.headerDismissFirstNotificationMask();
-    ajax(userPath(this.currentUser.username_lower), {
-      type: "PUT",
-      data: {
-        skip_new_user_tips: true,
-      },
-    }).then(() => {
-      this.currentUser.set("skip_new_user_tips", true);
-    });
   },
 
   headerKeyboardTrigger(msg) {

@@ -68,6 +68,8 @@ class CurrentUserSerializer < BasicUserSerializer
              :timezone,
              :featured_topic,
              :skip_new_user_tips,
+             :skip_first_notification,
+             :skip_topic_timeline,
              :do_not_disturb_until,
              :has_topic_draft,
              :can_review,
@@ -280,6 +282,14 @@ class CurrentUserSerializer < BasicUserSerializer
 
   def skip_new_user_tips
     object.user_option.skip_new_user_tips
+  end
+
+  def skip_first_notification
+    object.user_option.skip_first_notification
+  end
+
+  def skip_topic_timeline
+    object.user_option.skip_topic_timeline
   end
 
   def include_primary_group_id?

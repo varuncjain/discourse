@@ -570,6 +570,38 @@ table {
   animation-name: ping;
 }
 
+.education-popup-container {
+  align-items: center;
+  display: flex;
+  padding: 0.5em;
+  text-align: left;
+
+  .education-popup {
+    min-width: 300px;
+  }
+
+  .education-image img {
+    border: 1px solid var(--primary-low);
+    margin-left: 1em;
+    max-height: 100px;
+  }
+}
+
+.education-popup {
+  .education-title {
+    font-size: $font-up-2;
+    font-weight: bold;
+  }
+
+  .education-content {
+    margin-top: 0.25em;
+  }
+
+  .education-buttons {
+    margin-top: 1em;
+  }
+}
+
 .fade {
   opacity: 0;
   transition: opacity 0.15s linear;

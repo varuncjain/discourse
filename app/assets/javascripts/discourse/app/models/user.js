@@ -104,6 +104,8 @@ let userOptionFields = [
   "title_count_mode",
   "timezone",
   "skip_new_user_tips",
+  "skip_first_notification",
+  "skip_topic_timeline",
   "default_calendar",
   "bookmark_auto_delete_preference",
 ];
@@ -423,6 +425,16 @@ const User = RestModel.extend({
     });
 
     return this._saveUserData(data, updatedState);
+  },
+
+  setUserOption(key, value) {
+    if (this.user_option) {
+      this.set(`user_option.${key}`, value);
+    } else {
+      this.set("user_option", { [key]: value });
+    }
+
+    return this.save([key]);
   },
 
   _saveUserData(data, updatedState) {
