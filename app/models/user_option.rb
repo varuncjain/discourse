@@ -268,6 +268,10 @@ end
 #  oldest_search_log_date           :datetime
 #  bookmark_auto_delete_preference  :integer          default(3), not null
 #  enable_experimental_sidebar      :boolean          default(FALSE)
+#  skip_first_notification          :boolean          default(FALSE)
+#  skip_post_menu                   :boolean          default(FALSE)
+#  skip_topic_timeline              :boolean          default(FALSE)
+#  skip_user_card                   :boolean          default(FALSE)
 #
 # Indexes
 #
