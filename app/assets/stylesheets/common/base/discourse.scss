@@ -570,34 +570,34 @@ table {
   animation-name: ping;
 }
 
-.education-popup-container {
+.tutorial-popup-container {
   align-items: center;
   display: flex;
   padding: 0.5em;
   text-align: left;
 
-  .education-popup {
+  .tutorial-popup {
     min-width: 300px;
   }
 
-  .education-image img {
+  .tutorial-image img {
     border: 1px solid var(--primary-low);
     margin-left: 1em;
     max-height: 100px;
   }
 }
 
-.education-popup {
-  .education-title {
+.tutorial-popup {
+  .tutorial-title {
     font-size: $font-up-2;
     font-weight: bold;
   }
 
-  .education-content {
+  .tutorial-content {
     margin-top: 0.25em;
   }
 
-  .education-buttons {
+  .tutorial-buttons {
     margin-top: 1em;
   }
 }

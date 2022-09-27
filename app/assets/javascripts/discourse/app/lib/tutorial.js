@@ -12,8 +12,8 @@ const tutorialPlugin = {
           .querySelector(".btn-primary")
           .addEventListener("click", (event) => {
             instance.destroy();
-            const currentUser = instance.props.currentUser;
-            currentUser.setUserOption(instance.props.userOptionKey, true);
+            const { currentUser, tutorial } = instance.props;
+            currentUser.setUserOption(getUserOptionKey(tutorial), true);
             event.preventDefault();
           });
 
@@ -21,7 +21,7 @@ const tutorialPlugin = {
           .querySelector(".btn-flat")
           .addEventListener("click", (event) => {
             instance.destroy();
-            const currentUser = instance.props.currentUser;
+            const { currentUser } = instance.props;
             currentUser.setUserOption("skip_new_user_tips", true);
             event.preventDefault();
           });
@@ -30,13 +30,25 @@ const tutorialPlugin = {
   },
 };
 
+function getUserOptionKey(tutorial) {
+  return `skip_${tutorial.replaceAll("-", "_")}`;
+}
+
+function getAppEventsKey(tutorial) {
+  return `dismiss-tutorial:${tutorial}`;
+}
+
 export function showTutorial(instance, options) {
   if (instance) {
     instance.destroy();
   }
 
-  const userOptionKey = "skip_" + options.tutorial.replaceAll("-", "_");
-  if (options.currentUser[userOptionKey]) {
+  if (!options.reference) {
+    return;
+  }
+
+  const key = getUserOptionKey(options.tutorial);
+  if (options.currentUser[key]) {
     return;
   }
 
@@ -49,7 +61,10 @@ export function showTutorial(instance, options) {
     currentUser: options.currentUser,
 
     // Key used to save state.
-    userOptionKey,
+    tutorial: options.tutorial,
+
+    // Event handler used with appEvents
+    hideTutorial: () => hideTutorial(instance),
 
     // Tippy must be displayed as soon as possible and not be hidden unless
     // the user clicks on one of the two buttons.
@@ -65,7 +80,7 @@ export function showTutorial(instance, options) {
     maxWidth: "none",
 
     // The arrow does not look very good yet.
-    arrow: false,
+    // arrow: false,
 
     // It often happens for the reference element to be rerendered. In this
     // case, tippy must be rerendered too. Having an animation means that the
@@ -76,34 +91,50 @@ export function showTutorial(instance, options) {
     allowHTML: true,
 
     content:
-      `<div class='education-popup-container'>
-        <div class='education-popup'>
-          <div class='education-title'>${options.educationTitle}</div>
-          <div class='education-content'>${options.educationContent}</div>
-          <div class='education-buttons'>
-            <button class="btn btn-primary">${options.educationPrimary}</button>
+      `<div class='tutorial-popup-container'>
+        <div class='tutorial-popup'>
+          <div class='tutorial-title'>${options.titleText}</div>
+          <div class='tutorial-content'>${options.contentText}</div>
+          <div class='tutorial-buttons'>
+            <button class="btn btn-primary">${
+              options.primaryBtnText || I18n.t("tutorial.primary")
+            }</button>
             <button class="btn btn-flat btn-text">${
-              options.educationSecondary ||
-              I18n.t("tutorial.education_secondary")
+              options.secondaryBtnText || I18n.t("tutorial.secondary")
             }</button>
           </div>
         </div>
         ` +
       (options.educationImage
-        ? `<div class='education-image'>
+        ? `<div class='tutorial-image'>
           <img src="${options.educationImage}" />
         </div>`
         : "") +
       `</div>`,
   });
 
+  options.currentUser.appEvents.on(
+    getAppEventsKey(options.tutorial),
+    instance.props.hideTutorial
+  );
+
   return instance;
 }
 
 export function hideTutorial(instance) {
-  if (instance) {
-    instance.destroy();
+  if (!instance || instance.state.isDestroyed) {
+    return;
   }
 
-  return null;
+  instance.props.currentUser.appEvents.off(
+    getAppEventsKey(instance.props.tutorial),
+    instance.props.hideTutorial
+  );
+
+  instance.destroy();
+}
+
+export function dismissTutorial(user, tutorial) {
+  user.appEvents.trigger(`dismiss-tutorial:${tutorial}`);
+  return user.setUserOption(getUserOptionKey(tutorial), true);
 }

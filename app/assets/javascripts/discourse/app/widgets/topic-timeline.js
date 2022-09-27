@@ -602,21 +602,15 @@ export default createWidget("topic-timeline", {
   },
 
   didRenderWidget() {
-    const reference = document.querySelector("div.timeline-scrollarea-wrapper");
-    if (!reference) {
-      return;
-    }
-
     this._tippy = showTutorial(this._tippy, {
       currentUser: this.currentUser,
       tutorial: "topic-timeline",
 
-      educationTitle: I18n.t("tutorial.topic_timeline.education_title"),
-      educationContent: I18n.t("tutorial.topic_timeline.education_content"),
-      educationPrimary: I18n.t("tutorial.topic_timeline.education_primary"),
+      titleText: I18n.t("tutorial.topic_timeline.title"),
+      contentText: I18n.t("tutorial.topic_timeline.content"),
       educationImage: getURL("/images/education/topic-timeline.png"),
 
-      reference,
+      reference: document.querySelector("div.timeline-scrollarea-wrapper"),
 
       placement: "left",
     });

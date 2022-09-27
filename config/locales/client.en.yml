@@ -1804,17 +1804,25 @@ en:
       remove_status: "Remove status"
 
     tutorial:
-      education_secondary: "don't show me these tips"
+      primary: "Got it!"
+      secondary: "don't show me these tips"
 
       first_notification:
-        education_title: "Your first notification!"
-        education_content: "Notifications are used to keep you up-to-date with what is happening in community."
-        education_primary: "I'll read it later"
+        title: "Your first notification!"
+        content: "Notifications are used to keep you up-to-date with what is happening in community."
+        primary: "I'll read it later"
 
       topic_timeline:
-        education_title: "Topic timeline"
-        education_content: "Scroll quickly through a post using the topic timeline."
-        education_primary: "Got it!"
+        title: "Topic timeline"
+        content: "Scroll quickly through a post using the topic timeline."
+
+      post_menu:
+        title: "Post menu"
+        content: "See what you can do here"
+
+      user_card:
+        title: "User cards"
+        content: "Quickly view more user details by clicking on their avatar"
 
     loading: "Loading..."
     errors:

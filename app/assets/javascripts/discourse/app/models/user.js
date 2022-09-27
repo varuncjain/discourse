@@ -105,7 +105,9 @@ let userOptionFields = [
   "timezone",
   "skip_new_user_tips",
   "skip_first_notification",
+  "skip_post_menu",
   "skip_topic_timeline",
+  "skip_user_card",
   "default_calendar",
   "bookmark_auto_delete_preference",
 ];
@@ -428,11 +430,18 @@ const User = RestModel.extend({
   },
 
   setUserOption(key, value) {
+    if (this.get(key) === value) {
+      return Promise.resolve();
+    }
+
     if (this.user_option) {
       this.set(`user_option.${key}`, value);
     } else {
       this.set("user_option", { [key]: value });
     }
+
+    // User options are serialized at top level as members of user serializer
+    this.set(key, value);
 
     return this.save([key]);
   },

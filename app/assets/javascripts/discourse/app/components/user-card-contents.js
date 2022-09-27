@@ -15,6 +15,7 @@ import { prioritizeNameInUx } from "discourse/lib/settings";
 import { dasherize } from "@ember/string";
 import { emojiUnescape } from "discourse/lib/text";
 import { escapeExpression, modKeysPressed } from "discourse/lib/utilities";
+import { dismissTutorial } from "discourse/lib/tutorial";
 
 export default Component.extend(CardContentsBase, CanCheckEmails, CleansUp, {
   elementId: "user-card",
@@ -179,6 +180,8 @@ export default Component.extend(CardContentsBase, CanCheckEmails, CleansUp, {
   },
 
   _showCallback(username, $target) {
+    dismissTutorial(this.currentUser, "user-card");
+
     this._positionCard($target);
     this.setProperties({ visible: true, loading: true });
 

@@ -152,10 +152,7 @@ createWidget("header-notifications", {
   },
 
   didRenderWidget() {
-    if (
-      !this._shouldHighlightAvatar() ||
-      !document.querySelector(".badge-notification")
-    ) {
+    if (!this._shouldHighlightAvatar()) {
       return;
     }
 
@@ -163,13 +160,13 @@ createWidget("header-notifications", {
       currentUser: this.currentUser,
       tutorial: "first-notification",
 
-      educationTitle: I18n.t("tutorial.first_notification.education_title"),
-      educationContent: I18n.t("tutorial.first_notification.education_content"),
-      educationPrimary: I18n.t("tutorial.first_notification.education_primary"),
+      titleText: I18n.t("tutorial.first_notification.title"),
+      contentText: I18n.t("tutorial.first_notification.content"),
+      primaryBtnText: I18n.t("tutorial.first_notification.primary"),
 
       reference: document
         .querySelector(".badge-notification")
-        .parentElement.querySelector(".avatar"),
+        ?.parentElement?.querySelector(".avatar"),
 
       placement: "bottom-end",
     });
