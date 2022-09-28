@@ -43,7 +43,7 @@ export function showTutorial(instance, options) {
     instance.destroy();
   }
 
-  if (!options.reference) {
+  if (!options.currentUser || !options.reference) {
     return;
   }
 
@@ -80,7 +80,7 @@ export function showTutorial(instance, options) {
     maxWidth: "none",
 
     // The arrow does not look very good yet.
-    // arrow: false,
+    arrow: false,
 
     // It often happens for the reference element to be rerendered. In this
     // case, tippy must be rerendered too. Having an animation means that the
@@ -135,6 +135,10 @@ export function hideTutorial(instance) {
 }
 
 export function dismissTutorial(user, tutorial) {
+  if (!user) {
+    return;
+  }
+
   user.appEvents.trigger(`dismiss-tutorial:${tutorial}`);
   return user.setUserOption(getUserOptionKey(tutorial), true);
 }

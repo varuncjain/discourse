@@ -462,7 +462,7 @@ const User = RestModel.extend({
           "external_links_in_new_tab",
           "dynamic_favicon"
         );
-        User.current().setProperties(userProps);
+        User.current()?.setProperties(userProps);
         this.setProperties(updatedState);
         return result;
       })
