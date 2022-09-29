@@ -90,8 +90,7 @@ export function showTutorial(instance, options) {
     // The `content` property below is HTML.
     allowHTML: true,
 
-    content:
-      `<div class='tutorial-popup-container'>
+    content: `<div class='tutorial-popup-container'>
         <div class='tutorial-popup'>
           <div class='tutorial-title'>${options.titleText}</div>
           <div class='tutorial-content'>${options.contentText}</div>
@@ -104,13 +103,7 @@ export function showTutorial(instance, options) {
             }</button>
           </div>
         </div>
-        ` +
-      (options.educationImage
-        ? `<div class='tutorial-image'>
-          <img src="${options.educationImage}" />
-        </div>`
-        : "") +
-      `</div>`,
+      </div>`,
   });
 
   options.currentUser.appEvents.on(
