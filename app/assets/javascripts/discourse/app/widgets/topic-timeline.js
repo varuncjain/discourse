@@ -602,7 +602,7 @@ export default createWidget("topic-timeline", {
   },
 
   didRenderWidget() {
-    this._tippy = showTutorial(this._tippy, {
+    showTutorial({
       currentUser: this.currentUser,
       tutorial: "topic-timeline",
 
@@ -617,10 +617,10 @@ export default createWidget("topic-timeline", {
   },
 
   destroy() {
-    this._tippy = hideTutorial(this._tippy);
+    hideTutorial("topic-timeline");
   },
 
   willRerenderWidget() {
-    this._tippy = hideTutorial(this._tippy);
+    hideTutorial("topic-timeline");
   },
 });

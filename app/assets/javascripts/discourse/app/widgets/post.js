@@ -934,7 +934,7 @@ export default createWidget("post", {
       return;
     }
 
-    this._postMenuTippy = showTutorial(this._postMenuTippy, {
+    showTutorial({
       currentUser: this.currentUser,
       tutorial: "post-menu",
 
@@ -946,7 +946,7 @@ export default createWidget("post", {
       placement: "top",
     });
 
-    this._userCardTippy = showTutorial(this._userCardTippy, {
+    showTutorial({
       currentUser: this.currentUser,
       tutorial: "user-card",
 
@@ -960,12 +960,12 @@ export default createWidget("post", {
   },
 
   destroy() {
-    this._postMenuTippy = hideTutorial(this._postMenuTippy);
-    this._userCardTippy = hideTutorial(this._userCardTippy);
+    hideTutorial("post-menu");
+    hideTutorial("user-card");
   },
 
   willRerenderWidget() {
-    this._postMenuTippy = hideTutorial(this._postMenuTippy);
-    this._userCardTippy = hideTutorial(this._userCardTippy);
+    hideTutorial("post-menu");
+    hideTutorial("user-card");
   },
 });

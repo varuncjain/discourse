@@ -5,7 +5,7 @@ import { Promise } from "rsvp";
 import { formattedReminderTime } from "discourse/lib/bookmark";
 import { h } from "virtual-dom";
 import showModal from "discourse/lib/show-modal";
-import { dismissTutorial } from "discourse/lib/tutorial";
+import { hideTutorialForever } from "discourse/lib/tutorial";
 import { smallUserAtts } from "discourse/widgets/actions-summary";
 import I18n from "I18n";
 import {
@@ -710,7 +710,7 @@ export default createWidget("post-menu", {
   },
 
   showMoreActions() {
-    dismissTutorial(this.currentUser, "post-menu");
+    hideTutorialForever(this.currentUser, "post-menu");
 
     this.state.collapsed = false;
     const likesPromise = !this.state.likedUsers.length

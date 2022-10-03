@@ -429,23 +429,6 @@ const User = RestModel.extend({
     return this._saveUserData(data, updatedState);
   },
 
-  setUserOption(key, value) {
-    if (this.get(key) === value) {
-      return Promise.resolve();
-    }
-
-    if (this.user_option) {
-      this.set(`user_option.${key}`, value);
-    } else {
-      this.set("user_option", { [key]: value });
-    }
-
-    // User options are serialized at top level as members of user serializer
-    this.set(key, value);
-
-    return this.save([key]);
-  },
-
   _saveUserData(data, updatedState) {
     // TODO: We can remove this when migrated fully to rest model.
     this.set("isSaving", true);

@@ -1,8 +1,19 @@
 import I18n from "I18n";
 import tippy from "tippy.js";
 
+const GLOBAL_TUTORIALS_KEY = "new_user_tips";
+
+const TUTORIAL_KEYS = [
+  "first-notification",
+  "post-menu",
+  "topic-timeline",
+  "user-card",
+];
+
+let instances = {};
+
 // Plugin used to implement actions of the two buttons
-const tutorialPlugin = {
+const TutorialPlugin = {
   name: "tutorial",
 
   fn(instance) {
@@ -11,18 +22,16 @@ const tutorialPlugin = {
         instance.popper
           .querySelector(".btn-primary")
           .addEventListener("click", (event) => {
-            instance.destroy();
             const { currentUser, tutorial } = instance.props;
-            currentUser.setUserOption(getUserOptionKey(tutorial), true);
+            hideTutorialForever(currentUser, tutorial);
             event.preventDefault();
           });
 
         instance.popper
           .querySelector(".btn-flat")
           .addEventListener("click", (event) => {
-            instance.destroy();
             const { currentUser } = instance.props;
-            currentUser.setUserOption("skip_new_user_tips", true);
+            hideTutorialForever(currentUser, GLOBAL_TUTORIALS_KEY);
             event.preventDefault();
           });
       },
@@ -34,37 +43,28 @@ function getUserOptionKey(tutorial) {
   return `skip_${tutorial.replaceAll("-", "_")}`;
 }
 
-function getAppEventsKey(tutorial) {
-  return `dismiss-tutorial:${tutorial}`;
-}
+export function showTutorial(options) {
+  hideTutorial(options.tutorial);
 
-export function showTutorial(instance, options) {
-  if (instance) {
-    instance.destroy();
-  }
-
-  if (!options.currentUser || !options.reference) {
+  if (
+    !options.reference ||
+    !options.currentUser ||
+    options.currentUser.get(getUserOptionKey(options.tutorial)) ||
+    Object.keys(instances).length > 0
+  ) {
     return;
   }
 
-  const key = getUserOptionKey(options.tutorial);
-  if (options.currentUser[key]) {
-    return;
-  }
-
-  instance = tippy(options.reference, {
+  instances[options.tutorial] = tippy(options.reference, {
     placement: options.placement,
 
-    plugins: [tutorialPlugin],
+    plugins: [TutorialPlugin],
 
     // Current user is used to keep track of tutorials.
     currentUser: options.currentUser,
 
     // Key used to save state.
     tutorial: options.tutorial,
-
-    // Event handler used with appEvents
-    hideTutorial: () => hideTutorial(instance),
 
     // Tippy must be displayed as soon as possible and not be hidden unless
     // the user clicks on one of the two buttons.
@@ -105,33 +105,40 @@ export function showTutorial(instance, options) {
         </div>
       </div>`,
   });
-
-  options.currentUser.appEvents.on(
-    getAppEventsKey(options.tutorial),
-    instance.props.hideTutorial
-  );
-
-  return instance;
 }
 
-export function hideTutorial(instance) {
-  if (!instance || instance.state.isDestroyed) {
-    return;
+export function hideTutorial(tutorial) {
+  const instance = instances[tutorial];
+  if (instance && !instance.state.isDestroyed) {
+    instance.destroy();
   }
-
-  instance.props.currentUser.appEvents.off(
-    getAppEventsKey(instance.props.tutorial),
-    instance.props.hideTutorial
-  );
-
-  instance.destroy();
+  delete instances[tutorial];
 }
 
-export function dismissTutorial(user, tutorial) {
-  if (!user) {
-    return;
+export function hideTutorialForever(user, tutorial) {
+  const tutorials =
+    tutorial === GLOBAL_TUTORIALS_KEY
+      ? [GLOBAL_TUTORIALS_KEY, ...TUTORIAL_KEYS]
+      : [tutorial];
+
+  // Destroy tippy instances
+  tutorials.forEach(hideTutorial);
+
+  // Update user options
+  if (!user.user_option) {
+    user.set("user_option", {});
   }
 
-  user.appEvents.trigger(`dismiss-tutorial:${tutorial}`);
-  return user.setUserOption(getUserOptionKey(tutorial), true);
+  const userOptionKeys = tutorials.map(getUserOptionKey);
+
+  let updates = false;
+  userOptionKeys.forEach((key) => {
+    if (!user.get(key)) {
+      user.set(key, true);
+      user.set(`user_option.${key}`, true);
+      updates = true;
+    }
+  });
+
+  return updates ? user.save(userOptionKeys) : Promise.resolve();
 }

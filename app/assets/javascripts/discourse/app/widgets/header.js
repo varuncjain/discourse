@@ -156,7 +156,7 @@ createWidget("header-notifications", {
       return;
     }
 
-    this._tippy = showTutorial(this._tippy, {
+    showTutorial({
       currentUser: this.currentUser,
       tutorial: "first-notification",
 
@@ -173,11 +173,11 @@ createWidget("header-notifications", {
   },
 
   destroy() {
-    this._tippy = hideTutorial(this._tippy);
+    hideTutorial("first-notification");
   },
 
   willRerenderWidget() {
-    this._tippy = hideTutorial(this._tippy);
+    hideTutorial("first-notification");
   },
 });
 
