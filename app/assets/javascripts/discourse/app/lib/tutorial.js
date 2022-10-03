@@ -10,7 +10,8 @@ const TUTORIAL_KEYS = [
   "user-card",
 ];
 
-let instances = {};
+const instances = {};
+const queue = [];
 
 // Plugin used to implement actions of the two buttons
 const TutorialPlugin = {
@@ -49,10 +50,13 @@ export function showTutorial(options) {
   if (
     !options.reference ||
     !options.currentUser ||
-    options.currentUser.get(getUserOptionKey(options.tutorial)) ||
-    Object.keys(instances).length > 0
+    options.currentUser.get(getUserOptionKey(options.tutorial))
   ) {
     return;
+  }
+
+  if (Object.keys(instances).length > 0) {
+    return addToQueue(options);
   }
 
   instances[options.tutorial] = tippy(options.reference, {
@@ -130,7 +134,6 @@ export function hideTutorialForever(user, tutorial) {
   }
 
   const userOptionKeys = tutorials.map(getUserOptionKey);
-
   let updates = false;
   userOptionKeys.forEach((key) => {
     if (!user.get(key)) {
@@ -140,5 +143,26 @@ export function hideTutorialForever(user, tutorial) {
     }
   });
 
+  // Show next tutorial in queue
+  showNextTutorial();
+
   return updates ? user.save(userOptionKeys) : Promise.resolve();
+}
+
+function addToQueue(options) {
+  for (let i = 0; i < queue.size; ++i) {
+    if (queue[i].tutorial === options.tutorial) {
+      queue[i] = options;
+      return;
+    }
+  }
+
+  queue.push(options);
+}
+
+function showNextTutorial() {
+  const options = queue.shift();
+  if (options) {
+    showTutorial(options);
+  }
 }
