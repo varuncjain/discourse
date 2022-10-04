@@ -1,3 +1,4 @@
+import { iconHTML } from "discourse-common/lib/icon-library";
 import I18n from "I18n";
 import tippy from "tippy.js";
 
@@ -82,9 +83,7 @@ export function showTutorial(options) {
     // The default max width is 350px and that is not enough to fit the
     // buttons.
     maxWidth: "none",
-
-    // The arrow does not look very good yet.
-    arrow: false,
+    arrow: iconHTML("tippy-rounded-arrow"),
 
     // It often happens for the reference element to be rerendered. In this
     // case, tippy must be rerendered too. Having an animation means that the
