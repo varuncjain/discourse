@@ -119,6 +119,10 @@ export function hideTutorial(tutorial) {
 }
 
 export function hideTutorialForever(user, tutorial) {
+  if (!user) {
+    return;
+  }
+
   const tutorials =
     tutorial === GLOBAL_TUTORIALS_KEY
       ? [GLOBAL_TUTORIALS_KEY, ...TUTORIAL_KEYS]
