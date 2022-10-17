@@ -5,7 +5,7 @@ import Theme from "admin/models/theme";
 module("Unit | Controller | admin-customize-themes-show", function (hooks) {
   setupTest(hooks);
 
-  test("can display source url for remote themes", function (assert) {
+  test("XYZ can display source url for remote themes", function (assert) {
     const repoUrl = "https://github.com/discourse/discourse-brand-header.git";
     const remoteTheme = Theme.create({
       id: 2,

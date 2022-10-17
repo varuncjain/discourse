@@ -32,7 +32,7 @@ export default {
   after: "discourse-bootstrap",
 
   initialize(container, app) {
-    const siteSettings = container.lookup("service:site-settings");
+    // const siteSettings = container.lookup("service:site-settings");
 
     const currentUser = User.current();
 
@@ -40,15 +40,15 @@ export default {
     // to register a null value for anon
     app.register("service:current-user", currentUser, { instantiate: false });
 
-    const topicTrackingState = TopicTrackingState.create({
-      messageBus: container.lookup("service:message-bus"),
-      siteSettings,
-      currentUser,
-    });
+    // const topicTrackingState = TopicTrackingState.create({
+    //   messageBus: container.lookup("service:message-bus"),
+    //   siteSettings,
+    //   currentUser,
+    // });
 
-    app.register("service:topic-tracking-state", topicTrackingState, {
-      instantiate: false,
-    });
+    // app.register("service:topic-tracking-state", topicTrackingState, {
+    //   instantiate: false,
+    // });
 
     const site = Site.current();
     app.register("service:site", site, { instantiate: false });
@@ -67,7 +67,7 @@ export default {
       app.inject(t, "session", "service:session");
       app.inject(t, "messageBus", "service:message-bus");
       app.inject(t, "siteSettings", "service:site-settings");
-      app.inject(t, "topicTrackingState", "service:topic-tracking-state");
+      // app.inject(t, "topicTrackingState", "service:topic-tracking-state");
       app.inject(t, "keyValueStore", "service:key-value-store");
     });
 
@@ -86,11 +86,11 @@ export default {
       property: "siteSettings",
       specifier: "service:site-settings",
     });
-    injectServiceIntoService({
-      app,
-      property: "topicTrackingState",
-      specifier: "service:topic-tracking-state",
-    });
+    // injectServiceIntoService({
+    //   app,
+    //   property: "topicTrackingState",
+    //   specifier: "service:topic-tracking-state",
+    // });
     injectServiceIntoService({
       app,
       property: "keyValueStore",
@@ -108,6 +108,10 @@ export default {
       });
     }
 
-    startTracking(topicTrackingState);
+    debugger;
+    const x = container.lookup("service:search");
+    debugger;
+
+    // startTracking(topicTrackingState);
   },
 };
