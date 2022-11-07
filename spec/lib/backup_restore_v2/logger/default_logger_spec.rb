@@ -84,14 +84,54 @@ describe BackupRestoreV2::Logger::DefaultLogger do
         subject.log("Foo bar")
       end
     end
+
+    it "stores log entries" do
+      freeze_time("2022-10-13T21:20:17Z") do
+        subject.log("This is an info.")
+      end
+
+      freeze_time("2022-10-13T21:22:49Z") do
+        subject.log("This is another info.", level: BackupRestoreV2::Logger::INFO)
+        subject.log("This is a warning.", level: BackupRestoreV2::Logger::WARNING)
+      end
+
+      freeze_time("2022-10-13T21:23:38Z") do
+        subject.log("This is an error.", level: BackupRestoreV2::Logger::ERROR)
+      end
+
+      expect(subject.logs).to eq([
+        "[2022-10-13 21:20:17] INFO This is an info.",
+        "[2022-10-13 21:22:49] INFO This is another info.",
+        "[2022-10-13 21:22:49] WARN This is a warning.",
+        "[2022-10-13 21:23:38] ERROR This is an error."
+      ])
+    end
   end
 
   describe "#log_warning" do
+    it "enables the warning? flag" do
+      expect(subject.warnings?).to eq(false)
+
+      subject.log_error("Error")
+      expect(subject.warnings?).to eq(false)
+
+      subject.log_warning("Warning")
+      expect(subject.warnings?).to eq(true)
+    end
+
 
   end
 
   describe "#log_error" do
+    it "enables the errors? flag" do
+      expect(subject.errors?).to eq(false)
 
+      subject.log_warning("Warning")
+      expect(subject.errors?).to eq(false)
+
+      subject.log_error("Error")
+      expect(subject.errors?).to eq(true)
+    end
   end
 
   describe "#warnings?" do
@@ -102,9 +142,6 @@ describe BackupRestoreV2::Logger::DefaultLogger do
     end
 
     it "returns true when warnings have been logged with `#log`" do
-      expect(subject.warnings?).to eq(false)
-
-      subject.log_error("Error")
       expect(subject.warnings?).to eq(false)
 
       subject.log("Foo")
