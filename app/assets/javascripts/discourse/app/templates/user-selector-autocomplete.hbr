@@ -1,21 +1,23 @@
 <div class='autocomplete ac-user'>
   <ul>
     {{#each options.users as |user|}}
-      <li>
-        <a href title="{{user.name}}">
-          {{avatar user imageSize="tiny"}}
-          <span class='username'>{{format-username user.username}}</span>
-          {{#if user.status}}
-            {{emoji user.status.emoji}}
-            <span class='status-description' title='{{user.status.description}}'>
-              {{user.status.description}}
-            </span>
-            {{#if user.status.ends_at}}
-              {{format-age user.status.ends_at}}
+      {{#unless user.isMetadataMatch}}
+        <li>
+          <a href title="{{user.name}}">
+            {{avatar user imageSize="tiny"}}
+            <span class='username'>{{format-username user.username}}</span>
+            {{#if user.status}}
+              {{emoji user.status.emoji}}
+              <span class='status-description' title='{{user.status.description}}'>
+                {{user.status.description}}
+              </span>
+              {{#if user.status.ends_at}}
+                {{format-age user.status.ends_at}}
+              {{/if}}
             {{/if}}
-          {{/if}}
-        </a>
-      </li>
+          </a>
+        </li>
+      {{/unless}}
     {{/each}}
 
     {{#if options.emails}}
@@ -38,6 +40,28 @@
             <span class='name'>{{group.full_name}}</span>
           </a>
         </li>
+      {{/each}}
+    {{/if}}
+
+    {{#if options.users}}
+      {{#each options.users as |user|}}
+        {{#if user.isMetadataMatch}}
+          <li>
+            <a href title="{{user.name}}">
+              {{avatar user imageSize="tiny"}}
+              <span class='username'>{{format-username user.username}}</span>
+              {{#if user.status}}
+                {{emoji user.status.emoji}}
+                <span class='status-description' title='{{user.status.description}}'>
+                  {{user.status.description}}
+                </span>
+                {{#if user.status.ends_at}}
+                  {{format-age user.status.ends_at}}
+                {{/if}}
+              {{/if}}
+            </a>
+          </li>
+        {{/if}}
       {{/each}}
     {{/if}}
   </ul>
