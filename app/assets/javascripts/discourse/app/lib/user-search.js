@@ -165,6 +165,16 @@ function organizeResults(r, options) {
       }
       return results.length <= limit;
     });
+
+    users.forEach((user) => {
+      user.isMetadataMatch =
+        !user.username.includes(options.term) &&
+        !user.name?.includes(options.term);
+    });
+
+    users.sort((a, b) =>
+      a.isMetadataMatch === b.isMetadataMatch ? 0 : a.isMetadataMatch ? 1 : -1
+    );
   }
 
   if (options.allowEmails && emailValid(options.term)) {
@@ -191,14 +201,6 @@ function organizeResults(r, options) {
   results.users = users;
   results.emails = emails;
   results.groups = groups;
-
-  if (options.splitMetadataMatches) {
-    results.users.forEach((user) => {
-      user.isMetadataMatch =
-        !user.username.includes(options.term) &&
-        !user.name?.includes(options.term);
-    });
-  }
 
   return results;
 }

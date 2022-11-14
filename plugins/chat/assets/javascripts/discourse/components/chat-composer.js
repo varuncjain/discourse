@@ -351,7 +351,6 @@ export default Component.extend(TextareaTextManipulation, {
           this.set("value", text);
           this._focusTextArea();
         },
-        splitMetadataMatches: true,
       });
     }
   },
