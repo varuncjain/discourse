@@ -36,6 +36,14 @@ module DiscourseCLI
 
     end
 
+    desc "test", "Testing stuff"
+    def test
+      DiscourseCLI.load_rails
+
+      logger = BackupRestoreV2::LoggerV2.new
+      logger.warn("Hello world")
+    end
+
     no_commands do
       private def with_logger(name)
         logger = BackupRestoreV2::Logger::CliLogger.new(name)
