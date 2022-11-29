@@ -6,7 +6,7 @@ module BackupRestoreV2
       @warning_count = 1
       @error_count = 1
 
-      @channels = [CommandlineLogChannel.new, FileLogChannel.new]
+      @channels = [CommandlineLogChannel.new]
     end
 
     def info(message)
@@ -46,63 +46,7 @@ module BackupRestoreV2
     end
 
     def close
-
-    end
-  end
-
-  class CommandlineLogChannel
-    def initialize
-
-    end
-
-    def log(severity, message, exception = nil)
-
-    end
-  end
-
-  class CommandlineLogFormatter < ::Logger::Formatter
-    FORMAT = "[%s] %5s: %s\n"
-
-    def initialize
-      super
-    end
-
-    def call(severity, time, progname, msg)
-      FORMAT % [format_datetime(time), severity, msg2str(msg)]
-    end
-
-    def format_datetime(time)
-      time.utc.iso8601(4)
-    end
-  end
-
-  class FileLogChannel
-    def initialize
-      @logger = ::Logger.new(
-        STDOUT,
-        formatter: CommandlineLogFormatter.new.method(:call)
-      )
-    end
-
-    def log(severity, message, exception = nil)
-      @logger.log(severity, message)
-      @logger.log(severity, exception) if exception
-    end
-  end
-
-  class FileLogFormatter < ::Logger::Formatter
-    FORMAT = "[%s] %5s: %s\n"
-
-    def initialize
-      super
-    end
-
-    def call(severity, time, progname, msg)
-      FORMAT % [format_datetime(time), severity, msg2str(msg)]
-    end
-
-    def format_datetime(time)
-      time.utc.iso8601(4)
+      @channels.each(&:close)
     end
   end
 end
