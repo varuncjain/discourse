@@ -6,7 +6,7 @@ module BackupRestoreV2
       def initialize(file)
         @logger = ::Logger.new(
           file,
-          formatter: FileLogFormatter.new.method(:call)
+          formatter: LogFormatter.new.method(:call)
         )
       end
 
@@ -15,24 +15,36 @@ module BackupRestoreV2
         @logger.log(severity, exception) if exception
       end
 
+      def trigger_event(message)
+
+      end
+
+      def start_step(severity, message)
+        @logger.log(severity, "#{message}...")
+      end
+
+      def stop_step(severity, message)
+        @logger.log(severity, "#{message}... done")
+      end
+
       def close
         @logger.close
       end
-    end
 
-    class FileLogFormatter < ::Logger::Formatter
-      FORMAT = "[%s] %5s -- %s\n"
+      class LogFormatter < ::Logger::Formatter
+        FORMAT = "[%s] %5s -- %s\n"
 
-      def initialize
-        super
-      end
+        def initialize
+          super
+        end
 
-      def call(severity, time, progname, msg)
-        FORMAT % [format_datetime(time), severity, msg2str(msg)]
-      end
+        def call(severity, time, progname, msg)
+          FORMAT % [format_datetime(time), severity, msg2str(msg)]
+        end
 
-      def format_datetime(time)
-        time.utc.iso8601(4)
+        def format_datetime(time)
+          time.utc.iso8601(4)
+        end
       end
     end
   end

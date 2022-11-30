@@ -9,6 +9,10 @@ module BackupRestoreV2
       @channels = [CommandlineLogChannel.new]
     end
 
+    def debug(message)
+      log(::Logger::Severity::DEBUG, message)
+    end
+
     def info(message)
       log(::Logger::Severity::INFO, message)
     end
@@ -23,6 +27,11 @@ module BackupRestoreV2
       log(::Logger::Severity::ERROR, message, exception)
     end
 
+    def fatal(message, exception = nil)
+      @error_count += 1
+      log(::Logger::Severity::FATAL, message, exception)
+    end
+
     def log(severity, message, exception = nil)
       @channels.each do |channel|
         channel.log(severity, message, exception)
@@ -30,18 +39,30 @@ module BackupRestoreV2
     end
 
     def warnings?
-
+      @warning_count > 0
     end
 
     def errors?
-
+      @error_count > 0
     end
 
     def event(message)
-
+      @channels.each do |channel|
+        channel.trigger_event(message)
+      end
     end
 
-    def step(message, with_progress: true)
+    def step(message, severity: ::Logger::Severity::INFO)
+      @channels.each do |channel|
+        channel.start_step(severity, message)
+      end
+
+      @channels.each do |channel|
+        channel.stop_step(severity, message)
+      end
+    end
+
+    def step_with_progress(message, severity: ::Logger::Severity::INFO)
 
     end
 

@@ -1,30 +1,61 @@
 # frozen_string_literal: true
 
+require 'colored2'
+
 module BackupRestoreV2
   class LoggerV2
     class CommandlineLogChannel
       def initialize
-
+        @logger = ColorfulLoggger.new(
+          STDOUT,
+          formatter: LogFormatter.new.method(:call)
+        )
       end
 
       def log(severity, message, exception = nil)
-
-      end
-    end
-
-    class CommandlineLogFormatter < ::Logger::Formatter
-      FORMAT = "[%s] %5s: %s\n"
-
-      def initialize
-        super
+        @logger.log(severity, message)
+        @logger.log(severity, exception) if exception
       end
 
-      def call(severity, time, progname, msg)
-        FORMAT % [format_datetime(time), severity, msg2str(msg)]
+      def trigger_event(message)
+
       end
 
-      def format_datetime(time)
-        time.utc.iso8601(4)
+      def start_step(severity, message)
+
+      end
+
+      def stop_step(severity, message)
+
+      end
+
+      def close
+        @logger.close
+      end
+
+      class ColorfulLoggger < ::Logger
+        SEVERITY_LABELS = [
+          "DEBUG",
+          " INFO".blue,
+          " WARN".yellow,
+          "ERROR".red,
+          "FATAL".red.bold,
+          "  ANY"
+        ].freeze
+
+        private def format_severity(severity)
+          SEVERITY_LABELS[severity]
+        end
+      end
+
+      class LogFormatter < ::Logger::Formatter
+        def call(severity, time, progname, msg)
+          "#{severity} #{msg2str(msg)}\n"
+        end
+
+        def format_datetime(time)
+          time.utc.iso8601(4)
+        end
       end
     end
   end

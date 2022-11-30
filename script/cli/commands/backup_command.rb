@@ -41,7 +41,12 @@ module DiscourseCLI
       DiscourseCLI.load_rails
 
       logger = BackupRestoreV2::LoggerV2.new
+      logger.debug("Hello world")
+      logger.info("Hello world")
       logger.warn("Hello world")
+      logger.error("Hello world")
+      logger.fatal("Hello world")
+      logger.close
     end
 
     no_commands do
