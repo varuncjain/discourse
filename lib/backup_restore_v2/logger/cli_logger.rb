@@ -49,7 +49,7 @@ module BackupRestoreV2
       def log_to_stdout(message, level = Logger::INFO)
         case level
         when Logger::INFO
-          puts "INFO ".blue + " #{message}"
+          puts "INFO " + " #{message}"
         when Logger::ERROR
           puts "FAIL ".red + " #{message}"
         when Logger::WARNING
