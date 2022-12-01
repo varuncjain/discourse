@@ -6,7 +6,9 @@ module BackupRestoreV2
       @warning_count = 1
       @error_count = 1
 
-      @channels = [CommandlineLogChannel.new]
+      path = "/tmp/backup.log"
+      FileUtils.rm_f(path)
+      @channels = [CommandlineLogChannel.new, FileLogChannel.new(path)]
     end
 
     def debug(message)

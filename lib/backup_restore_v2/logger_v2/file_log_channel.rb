@@ -32,7 +32,7 @@ module BackupRestoreV2
       end
 
       def create_progress_channel(message)
-        nil
+        FileProgressChannel.new(message, @logger)
       end
 
       class LogFormatter < ::Logger::Formatter
