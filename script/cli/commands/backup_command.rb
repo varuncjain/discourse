@@ -46,6 +46,17 @@ module DiscourseCLI
       logger.warn("Hello world")
       logger.error("Hello world")
       logger.fatal("Hello world")
+
+      logger.step_with_progress("Preparing rocket") do |progress|
+        max = 1000
+        progress.start(max)
+        (1..max).each do |i|
+          sleep(0.01)
+          progress.increment
+          sleep(2) if i == max
+        end
+      end
+
       logger.close
     end
 

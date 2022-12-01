@@ -63,7 +63,14 @@ module BackupRestoreV2
     end
 
     def step_with_progress(message, severity: ::Logger::Severity::INFO)
+      progress_logger = ProgressLogger.new(message, @channels)
 
+      begin
+        yield progress_logger
+        progress_logger.success
+      rescue
+        progress_logger.error
+      end
     end
 
     def close

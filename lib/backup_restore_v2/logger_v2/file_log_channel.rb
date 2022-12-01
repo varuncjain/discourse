@@ -31,6 +31,10 @@ module BackupRestoreV2
         @logger.close
       end
 
+      def create_progress_channel(message)
+        nil
+      end
+
       class LogFormatter < ::Logger::Formatter
         FORMAT = "[%s] %5s -- %s\n"
 

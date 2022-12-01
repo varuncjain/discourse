@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 require 'colored2'
+require 'ruby-progressbar'
 
 module BackupRestoreV2
   class LoggerV2
-    class CommandlineProgressLogger
+    class CommandlineProgressChannel
       def initialize(message)
         @message = message
-        @logger = logger
 
-        @progressbar = ProgressBar.create(
+        @progressbar = ::ProgressBar.create(
           format: " %j%%  %t | %c / %C | %E",
           title: @message,
           autofinish: false,
@@ -18,46 +18,31 @@ module BackupRestoreV2
       end
 
       def start(max_progress)
-        @progress = 0
         @max_progress = max_progress
 
-        @progressbar.progress = @progress
+        @progressbar.progress = 0
         @progressbar.total = @max_progress
-
-        log_progress
       end
 
       def increment
-        @progress += 1
         @progressbar.increment
-        log_progress if @progress % 50 == 0
-      end
-
-      def log(message, ex = nil)
-        @logger.log_to_logfile(message, Logger::WARNING)
       end
 
       def success
         reset_current_line
         @progressbar.format = "%t | %c / %C | %E"
-        @progressbar.title = "DONE ".green + " #{@message}"
+        @progressbar.title = " DONE".green + "  #{@message}"
         @progressbar.finish
       end
 
       def error
         reset_current_line
         @progressbar.format = "%t | %c / %C | %E"
-        @progressbar.title = "FAIL ".red + " #{@message}"
+        @progressbar.title = " FAIL".red + "  #{@message}"
         @progressbar.finish
       end
 
-      private
-
-      def log_progress
-        @logger.log_to_logfile("#{@message} | #{@progress} / #{@max_progress}")
-      end
-
-      def reset_current_line
+      private def reset_current_line
         print "\033[K" # delete the output of progressbar, because it doesn't overwrite longer lines
       end
     end

@@ -33,13 +33,17 @@ module BackupRestoreV2
         @logger.close
       end
 
+      def create_progress_channel(message)
+        CommandlineProgressChannel.new(message)
+      end
+
       class ColorfulLoggger < ::Logger
         SEVERITY_LABELS = [
           "DEBUG",
           " INFO".blue,
           " WARN".yellow,
           "ERROR".red,
-          "FATAL".red.bold,
+          "FATAL".red,
           "  ANY"
         ].freeze
 
@@ -50,7 +54,7 @@ module BackupRestoreV2
 
       class LogFormatter < ::Logger::Formatter
         def call(severity, time, progname, msg)
-          "#{severity} #{msg2str(msg)}\n"
+          "#{severity}  #{msg2str(msg)}\n"
         end
 
         def format_datetime(time)
