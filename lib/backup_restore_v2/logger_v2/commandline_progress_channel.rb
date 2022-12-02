@@ -13,7 +13,8 @@ module BackupRestoreV2
           format: " %j%%  %t | %c / %C | %E",
           title: @message,
           autofinish: false,
-          smoothing: 0.5
+          smoothing: 0.5,
+          time: ProgressBarClockTime.new
         )
       end
 
@@ -45,6 +46,15 @@ module BackupRestoreV2
       private def reset_current_line
         print "\033[K" # delete the output of progressbar, because it doesn't overwrite longer lines
       end
+
+      class ProgressBarClockTime
+        # make the time calculations more accurate
+        # see https://blog.dnsimple.com/2018/03/elapsed-time-with-ruby-the-right-way/
+        def now
+          Process.clock_gettime(Process::CLOCK_MONOTONIC)
+        end
+      end
+      private_constant :ProgressBarClockTime
     end
   end
 end

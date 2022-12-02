@@ -6,7 +6,7 @@ require 'ruby-progressbar'
 module BackupRestoreV2
   class LoggerV2
     class FileProgressChannel
-      MIN_SECONDS_BETWEEN_PROGRESS_LOGGING = 60
+      MIN_SECONDS_BETWEEN_PROGRESS_LOGGING = 2
 
       def initialize(message, logger)
         @message = message
@@ -15,9 +15,9 @@ module BackupRestoreV2
 
       def start(max_progress)
         @progress = 0
-        @max_progress = max_progress.to_f
+        @max_progress = max_progress
 
-        @logger.info("#{@message}...")
+        @logger.info("#{@message}... 0 / #{@max_progress}")
 
         @last_output_time = clock_time
         @last_output_percent = 0
@@ -26,14 +26,14 @@ module BackupRestoreV2
       def increment
         @progress += 1
 
-        progress_percent = (@progress / @max_progress * 100).to_i
+        progress_percent = (@progress / @max_progress.to_f * 100).to_i
         current_time = clock_time
 
         if loggable?(progress_percent, current_time)
           @last_output_time = current_time
           @last_output_percent = progress_percent
 
-          @logger.info("#{@message}... #{progress_percent}%")
+          @logger.info("#{@message}... #{@progress} / #{@max_progress} | #{progress_percent}%")
         end
       end
 
