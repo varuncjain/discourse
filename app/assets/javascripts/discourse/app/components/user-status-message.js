@@ -1,6 +1,7 @@
 import Component from "@ember/component";
 import { computed } from "@ember/object";
 import { until } from "discourse/lib/formatter";
+import { AnonymousUser } from "discourse/lib/anonymous-user";
 
 export default class UserStatusMessage extends Component {
   tagName = "";
@@ -12,10 +13,7 @@ export default class UserStatusMessage extends Component {
       return null;
     }
 
-    const timezone = this.currentUser
-      ? this.currentUser.timezone
-      : moment.tz.guess();
-
-    return until(this.status.ends_at, timezone, this.currentUser?.locale);
+    const actingUser = this.currentUser || new AnonymousUser();
+    return until(this.status.ends_at, actingUser.timezone, actingUser.locale);
   }
 }
