@@ -1212,8 +1212,6 @@ fi:
         warnings: "Viralliset varoitukset"
         read_more_in_group: "Haluatko lukea lisää? Selaile muita ryhmän %{groupLink} viestejä."
         read_more: "Haluatko lukea lisää? Selaa muita viestejä <a href='%{basePath}/u/%{username}/messages'>yksityisviesteissä</a>."
-        read_more_group_pm_MF: "Jäljellä on{ UNREAD, plural, =0 {} one { <a href='{basePath}/u/{username}/messages/group/{groupName}/unread'># lukematon</a> } other { <a href='{basePath}/u/{username}/messages/group/{groupName}/unread'># lukematonta</a>} }{ NEW, plural, =0 {} one { {BOTH, select, true{ja} false {is } other{}} <a href='{basePath}/u/{username}/messages/group/{groupName}/new'># uusi</a> viesti} other { {BOTH, select, true{ja} false {ja} other{ja}} <a href='{basePath}/u/{username}/messages/group/{groupName}/new'># uutta</a> viestiä} }, tai selaa muita viestejä ryhmässä {groupLink}"
-        read_more_personal_pm_MF: "Jäljellä { UNREAD, plural, =0 {} one { on <a href='{basePath}/u/{username}/messages/unread'># lukematon</a>} other { on <a href='{basePath}/u/{username}/messages/unread'># lukematonta</a>} } { NEW, plural, =0 {} one { {BOTH, select, true{ja } false {on } other{}} <a href='{basePath}/u/{username}/messages/new'># uusi</a> viesti} other { {BOTH, select, true{ja } false {on } other{}} <a href='{basePath}/u/{username}/messages/new'># uutta</a> viestiä} }, tai selaa muita <a href='{basePath}/u/{username}/messages'>yksityisviestejä</a>"
       preferences_nav:
         account: "Tili"
         security: "Tietoturva"
@@ -1277,7 +1275,6 @@ fi:
         use: "Käytä Authenticator-sovellusta"
         enforced_notice: "Kaksivaiheinen tunnistus täytyy ottaa käyttöön, jotta voit käyttää sivustoa."
         disable: "Poista käytöstä"
-        disable_confirm: "Oletko varma, että haluat poistaa kaikki kaksivaiheiset tunnistustavat käytöstä?"
         save: "Tallenna"
         edit: "Muokkaa"
         edit_title: "Muokkaa todentajaa"
@@ -1365,7 +1362,6 @@ fi:
         authenticated: "%{provider} on todentanut sähköpostiosoitteesi"
         invite_auth_email_invalid: "Kutsun sähköpostiosoite ei täsmää sähköpostiosoitteen kanssa, jonka %{provider} todensi"
         authenticated_by_invite: "Kutsu on vahvistanut sähköpostiosoitteesi"
-        frequency_immediately: "Lähetämme sinulle välittömästi sähköpostiviestin, jos et ole lukenut asiaa, josta lähetämme sinulle sähköpostia."
         frequency:
           one: "Lähetämme sähköpostin vain, jos emme ole nähneet sinua viimeisen minuutin aikana."
           other: "Lähetämme sähköpostin vain, jos emme ole nähneet sinua viimeisten %{count} minuutin aikana."
@@ -1722,12 +1718,6 @@ fi:
       logout_disabled: "Et voi kirjautua ulos, kun sivusto on vain luku -tilassa."
     staff_writes_only_mode:
       enabled: "Sivusto on vain henkilökunta -tilassa. Voit jatkaa selailua, mutta vastaaminen, tykkääminen ja muita toimintoja on rajoitettu vain henkilökunnan jäsenille."
-    too_few_topics_and_posts_notice_MF: >-
-      Laitetaanpa <a href="https://blog.discourse.org/2014/08/building-a-discourse-community/">keskustelu alulle!</a> Ketjuja {currentTopics, plural, one {on <strong>#</strong>} other {on <strong>#</strong>}} ja viestejä {currentPosts, plural, one {<strong>#</strong>} other {<strong>#</strong>}}. Vierailijoilla tulisi olla enemmän vastauksia innoittavaa luettavaa – suositamme ainakin {requiredTopics, plural, one {<strong>#</strong> ketjun} other {<strong>#</strong> ketjua}} ja {requiredPosts, plural, one {<strong>#</strong> viestin} other {<strong>#</strong> viestiä}}. Tämä viesti näkyy vain henkilökunnalle.
-    too_few_topics_notice_MF: >-
-      Laitetaanpa <a href="https://blog.discourse.org/2014/08/building-a-discourse-community/">keskustelu alulle!</a> Ketjuja {currentTopics, plural, one {on <strong>#</strong>} other {on <strong>#</strong>}}. Vierailijoilla tulisi olla enemmän vastauksia innoittavaa luettavaa – suositamme ainakin {requiredTopics, plural, one {<strong>#</strong> ketjun} other {<strong>#</strong> ketjua}}. Tämä viesti näkyy vain henkilökunnalle.
-    too_few_posts_notice_MF: >-
-      Laitetaanpa <a href="https://blog.discourse.org/2014/08/building-a-discourse-community/">keskustelu alulle!</a> Viestejä {currentPosts, plural, one {on <strong>#</strong>} other {on <strong>#</strong>}}. Vierailijoilla tulisi olla enemmän vastauksia innoittavaa luettavaa – suositamme ainakin {requiredPosts, plural, one {<strong>#</strong> viestin} other {<strong>#</strong> viestiä}}. Tämä viesti näkyy vain henkilökunnalle.
     logs_error_rate_notice:
       reached_hour_MF: "<b>{relativeAge}</b> – <a href='{url}' target='_blank'>{rate, plural, one {# virhe/tunti} other {# virhettä/tunti}}</a> saavutti sivustoasetusrajan {limit, plural, one {# virhe/tunti} other {# virhettä/tunti}}."
       reached_minute_MF: "<b>{relativeAge}</b> – <a href='{url}' target='_blank'>{rate, plural, one {# virhe/minuutti} other {# virhettä/minuutti}}</a> saavutti sivustoasetusrajan {limit, plural, one {# virhe/minuutti} other {# virhettä/minuutti}}."
@@ -2570,11 +2560,7 @@ fi:
       show_links: "näytä tämän ketjun linkit"
       collapse_details: "kutista ketjun tiedot"
       expand_details: "laajenna ketjun tiedot"
-      read_more_in_category: "Haluatko lukea lisää? Selaile muita alueen %{catLink} ketjuja tai %{latestLink}."
-      read_more: "Haluatko lukea lisää? Selaa aluetta %{catLink} tai katsele %{latestLink}."
       unread_indicator: "Kukaan jäsen ei ole lukenut ketjun viimeistä viestiä vielä."
-      read_more_MF: "Sinulla on { UNREAD, plural, =0 {} one { <a href='{basePath}/unread'>1 ketju</a>, jossa on viestejä} other { <a href='{basePath}/unread'># ketjua</a>, joissa on viestejä}} { NEW, plural, =0 {} one { {BOTH, select, true{ja } false { } other{}} <a href='{basePath}/new'>1 uusi</a> ketju} other { {BOTH, select, true{ja } false { } other{}} <a href='{basePath}/new'># uutta ketjua</a>}} lukematta. Tai {CATEGORY, select, true {selaile aluetta {catLink}} false {katsele {latestLink}.} other {}}"
-      bumped_at_title_MF: "{FIRST_POST}: {CREATED_AT}\n{LAST_POST}: {BUMPED_AT}"
       browse_all_categories: Selaa kaikkia alueita
       browse_all_tags: Selaa kaikkia tunnisteita
       view_latest_topics: katso tuoreimmat ketjut
@@ -4080,10 +4066,6 @@ fi:
         about: "Muokkaa ryhmien jäsenyyksiä ja nimiä täällä"
         group_members: "Ryhmän jäsenet"
         delete: "Poista"
-        delete_confirm: "Poistetaanko tämä ryhmä?"
-        delete_with_messages_confirm:
-          one: "Tämän ryhmän poistaminen aiheuttaa %{count} viestin orpoutumisen, ja ryhmän jäsenillä ei ole tämän jälkeen pääsyä siihen.<br><br>Oletko varma?"
-          other: "Tämän ryhmän poistaminen aiheuttaa %{count} viestin orpoutumisen, ja ryhmän jäsenillä ei ole tämän jälkeen pääsyä niihin.<br><br>Oletko varma?"
         delete_failed: "Ryhmän poistaminen ei onnistu. Jos tämä on automaattinen ryhmä, sitä ei voi poistaa."
         delete_automatic_group: Tämä on automaattisesti luotu ryhmä, eikä sitä voi poistaa.
         delete_owner_confirm: "Perutaanko käyttäjältä '%{username}' isännyys?"
@@ -5313,7 +5295,6 @@ fi:
           search: "Haku"
           groups: "Ryhmät"
           dashboard: "Hallintapaneeli"
-          sidebar: "Sivupalkki"
         secret_list:
           invalid_input: "Tekstikentät eivät voi olla tyhjiä tai sisältää pystyviivamerkkiä."
         default_categories:

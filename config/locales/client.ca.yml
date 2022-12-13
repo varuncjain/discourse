@@ -1055,6 +1055,7 @@ ca:
           Protegiu el vostre compte amb codis de seguretat d'un sol ús.
         use: "Utilitza l'aplicació Authenticator"
         disable: "Desactiva"
+        delete: "Suprimeix"
         save: "Desa"
         edit: "Edita"
         totp:
@@ -1120,7 +1121,6 @@ ca:
         required: "Introduïu una adreça de correu electrònic"
         invalid: "Introduïu una adreça vàlida de correu electrònic"
         authenticated: "El vostre correu electrònic ha estat autenticat per %{provider}"
-        frequency_immediately: "Us enviarem un correu immediatament si no heu llegit la cosa sobre la qual us escrivim."
         frequency:
           one: "Sols us enviarem un correu electrònic si no us hem vist en el darrer minut."
           other: "Sols us enviarem un correu electrònic si no us hem vist en els darrers %{count} minuts."
@@ -1965,8 +1965,6 @@ ca:
       back_to_list: "Torna a la llista de temes"
       options: "Opcions del tema"
       show_links: "mostra enllaços dins d'aquest tema"
-      read_more_in_category: "Voleu llegir-ne més? Navegueu per altres temes a %{catLink} o %{latestLink}."
-      read_more: "Voleu llegir-ne més? %{catLink} o %{latestLink}."
       unread_indicator: "Cap membre encara no ha llegit la darrera publicació d'aquest tema."
       browse_all_categories: Navega per totes les categories
       view_latest_topics: mira els temes més recents
@@ -3076,7 +3074,6 @@ ca:
         about: "Editeu aquí la vostra afiliació a grups i els vostres noms"
         group_members: "Membres de grup"
         delete: "Suprimeix"
-        delete_confirm: "Voleu suprimir aquest grup?"
         delete_failed: "És impossible suprimir aquest grup. Si és un grup automàtic, no pot ser destruït."
         delete_owner_confirm: "Voleu eliminar privilegis de propietari per a '%{username}'?"
         add: "Afegeix"
@@ -3940,6 +3937,11 @@ ca:
         unlock_trust_level: "Desbloca el nivell de confiança"
         silenced_count: "Silenciat"
         suspended_count: "Suspesos"
+        other_matches_list:
+          username: "Nom d'usuari "
+          trust_level: "Nivell de confiança"
+          read_time: "Temps de lectura"
+          posts: "Publicacions"
         tl3_requirements:
           title: "Requisits per al nivell de confiança 3"
           table_title:
@@ -4068,6 +4070,7 @@ ca:
           search: "Cerca"
           groups: "Grups"
           dashboard: "Tauler de control"
+          navigation: "Navegació"
         secret_list:
           invalid_input: "Els camps d'entrada no poden ser buits o contenir un caràcter de barra vertical."
         default_categories:
