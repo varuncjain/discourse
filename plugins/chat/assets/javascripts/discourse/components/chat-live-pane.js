@@ -761,8 +761,8 @@ export default Component.extend({
       case "restore":
         this.handleRestoreMessage(data);
         break;
-      case "mention_warning":
-        this.handleMentionWarning(data);
+      case "mention_warnings":
+        this.handleMentionWarnings(data);
         break;
       case "self_flagged":
         this.handleSelfFlaggedMessage(data);
@@ -939,8 +939,11 @@ export default Component.extend({
     return 0;
   },
 
-  handleMentionWarning(data) {
-    this.messageLookup[data.chat_message_id]?.set("mentionWarning", data);
+  handleMentionWarnings(data) {
+    this.messageLookup[data.chat_message_id]?.set(
+      "mentionWarnings",
+      data.warnings
+    );
   },
 
   handleSelfFlaggedMessage(data) {
