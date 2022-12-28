@@ -6,7 +6,12 @@ export function registerServiceWorker(
   registerOptions = {}
 ) {
   if (window.isSecureContext && "serviceWorker" in navigator) {
-    if (serviceWorkerURL) {
+    const caps = container.lookup("capabilities:main");
+    const safariVersion = navigator.userAgent.match(/Version\/(\d+)/);
+    const isOldSafari =
+      caps.isSafari && safariVersion && parseInt(safariVersion[1], 10) < 16;
+
+    if (serviceWorkerURL && !isOldSafari) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
         for (let registration of registrations) {
           if (
