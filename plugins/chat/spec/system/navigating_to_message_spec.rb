@@ -26,8 +26,7 @@ RSpec.describe "Navigating to message", type: :system, js: true do
         Fabricate(
           :post,
           topic: topic_1,
-          raw:
-            "<a href=\"/chat/c/-/#{channel_1.id}?messageId=#{first_message.id}\">#{link}</a>",
+          raw: "<a href=\"/chat/c/-/#{channel_1.id}?messageId=#{first_message.id}\">#{link}</a>",
         )
       end
 
@@ -112,8 +111,7 @@ RSpec.describe "Navigating to message", type: :system, js: true do
         Fabricate(
           :post,
           topic: topic_1,
-          raw:
-            "<a href=\"/chat/c/-/#{channel_1.id}?messageId=#{first_message.id}\">#{link}</a>",
+          raw: "<a href=\"/chat/c/-/#{channel_1.id}?messageId=#{first_message.id}\">#{link}</a>",
         )
       end
 
