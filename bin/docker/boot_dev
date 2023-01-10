@@ -89,7 +89,10 @@ done
 # 9292 unicorn
 # 9405 prometheus exporter
 
-docker pull discourse/discourse_dev:release
+if [ "$SKIP_DOCKER_PULL" != "1" ]; then
+    docker pull discourse/discourse_dev:release
+fi
+
 docker run -d \
     -p $local_publish:8025:8025 \
     -p $local_publish:3000:3000 \
