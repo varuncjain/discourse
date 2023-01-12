@@ -56,10 +56,10 @@ class UploadSecurity
   end
 
   def should_be_secure_with_reason
-    insecure_context_checks.each { |check, reason| return false, reason if perform_check(check) }
     secure_context_checks.each do |check, reason|
       return perform_check(check), reason if priority_check?(check)
       return true, reason if perform_check(check)
+    insecure_context_checks.each { |check, reason| return false, reason if perform_check(check) }
     end
 
     [false, "no checks satisfied"]
