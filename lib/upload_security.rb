@@ -118,6 +118,10 @@ class UploadSecurity
     @upload.secure?
   end
 
+  def s3_iam_profile_used_check
+    SiteSetting.enable_s3_uploads? && SiteSetting.s3_use_iam_profile?
+  end
+
   private
 
   def access_control_post
@@ -142,6 +146,7 @@ class UploadSecurity
       secure_creation_for_modifiers: "one or more creation for_modifiers was satisfied",
       uploading_in_composer: "uploading via the composer",
       already_secure: "upload is already secure",
+      s3_iam_profile_used: "s3 bucket is accesible by iam profile and has a private acl",
     }
   end
 
