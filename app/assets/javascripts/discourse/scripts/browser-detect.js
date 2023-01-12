@@ -1,7 +1,12 @@
 /* eslint-disable no-var */ // `let` is not supported in very old browsers
 
 (function () {
-  if (!window.WeakMap || !window.Promise || typeof globalThis === "undefined") {
+  if (
+    !window.WeakMap ||
+    !window.Promise ||
+    typeof globalThis === "undefined" ||
+    !String.prototype.replaceAll
+  ) {
     window.unsupportedBrowser = true;
   } else {
     // Some implementations of `WeakMap.prototype.has` do not accept false
@@ -10,6 +15,13 @@
     try {
       new WeakMap().has(0);
     } catch (err) {
+      window.unsupportedBrowser = true;
+    }
+
+    // Check for CSS `:is()` selector support
+    try {
+      document.querySelector(":is(html)");
+    } catch {
       window.unsupportedBrowser = true;
     }
 
